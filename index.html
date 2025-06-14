@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tool Tài Xỉu MD5 Go88 VIP</title>
+  <style>
+    body {
+      background: #000;
+      color: #FFD700;
+      font-family: 'Arial Black', sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 28px;
+      color: #00FFFF;
+      text-shadow: 0 0 8px #FFD700;
+    }
+    .box {
+      background: #111;
+      border: 2px solid #FFD700;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 15px #ffaa00;
+    }
+    button {
+      margin: 8px;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .tai { background: #00ffcc; color: #000; }
+    .xiu { background: #ff6699; color: #000; }
+    .reset { background: #999; color: #fff; }
+    .result, .recommend, .trend, .history {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .highlight {
+      font-size: 26px;
+      color: #00ff99;
+      text-shadow: 0 0 10px #00ffcc;
+      font-weight: bold;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Tool Tài Xỉu MD5 Go88 - Chuẩn Kéo Thuê</h1>
+  <div class="box">
+    <p><strong>Bấm để nhập 21 kết quả gần nhất (MD5 Tài/Xỉu):</strong></p>
+    <button class="tai" onclick="add('Tài')">➕ Tài</button>
+    <button class="xiu" onclick="add('Xỉu')">➕ Xỉu</button>
+    <button class="reset" onclick="undo()">↩️ Xoá gần nhất</button>
+    <button class="reset" onclick="resetAll()">🗑️ Reset tất cả</button>
+    <div class="history" id="history">Đã nhập: (0)</div>
+    <p><strong>Nhập số vốn hiện tại (VNĐ):</strong></p>
+    <input type="number" id="capitalInput" placeholder="VD: 20000" style="padding:10px; width:80%; margin-top:10px;" />
+    <br/><br/>
+    <button onclick="analyze()" class="tai">🔥 Phân Tích MD5 & Dự Đoán</button>
+    <div class="trend" id="trend"></div>
+    <div class="result" id="result"></div>
+    <div class="recommend" id="recommend"></div>
+  </div>
+  <footer>Cre by Trần Quốc Trịnh</footer>
+
+  <script>
+    let history = [];
+
+    function add(val) {
+      if (history.length >= 21) return alert("⚠️ Đã đủ 21 kết quả!");
+      history.push(val);
+      showHistory();
+    }
+
+    function undo() {
+      history.pop();
+      showHistory();
+    }
+
+    function resetAll() {
+      history = [];
+      showHistory();
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("recommend").innerHTML = "";
+      document.getElementById("trend").innerHTML = "";
+    }
+
+    function showHistory() {
+      document.getElementById("history").innerHTML = "Đã nhập: (" + history.length + ") → " + history.join(" ");
+    }
+
+    function detectMD5Trend(data) {
+      const last6 = data.slice(-6).join("-");
+      if (/^(Tài-){5}Tài$/.test(last6)) return "📈 Cầu bệt Tài MD5";
+      if (/^(Xỉu-){5}Xỉu$/.test(last6)) return "📉 Cầu bệt Xỉu MD5";
+      if (/^(Tài-Xỉu){3}|(Xỉu-Tài){3}/.test(last6)) return "🔁 Cầu MD5 1-1 sâu";
+      if (data.slice(-4).filter(x => x === data[data.length - 1]).length >= 3) return "⚠️ Cầu bẫy MD5 đang hình thành";
+      return "❓ Cầu chưa rõ hoặc cầu xoay";
+    }
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'vi-VN';
+        window.speechSynthesis.speak(msg);
+      }
+    }
+
+    function analyze() {
+      const capital = parseInt(document.getElementById("capitalInput").value.trim());
+      if (history.length < 10 || isNaN(capital) || capital <= 0) {
+        document.getElementById("result").innerText = "⚠️ Nhập đủ 21 kết quả và số vốn!";
+        return;
+      }
+
+      const trendText = detectMD5Trend(history);
+      document.getElementById("trend").innerText = `📊 Phân tích cầu MD5: ${trendText}`;
+
+      const last3 = history.slice(-3).join("-");
+      let prediction = "⚠️ KHÔNG ĐÁNH";
+      let confidence = 0;
+
+      if (last3 === "Tài-Tài-Tài") { prediction = "Xỉu"; confidence = 94; }
+      else if (last3 === "Xỉu-Xỉu-Xỉu") { prediction = "Tài"; confidence = 94; }
+      else if (last3 === "Tài-Tài-Xỉu") { prediction = "Tài"; confidence = 88; }
+      else if (last3 === "Xỉu-Xỉu-Tài") { prediction = "Xỉu"; confidence = 85; }
+      else if (last3 === "Tài-Xỉu-Tài") { prediction = "Xỉu"; confidence = 82; }
+      else if (last3 === "Xỉu-Tài-Xỉu") { prediction = "Tài"; confidence = 82; }
+
+      let suggest = "🚫 KHÔNG NÊN VÀO TIỀN";
+      if (confidence >= 88) suggest = `${Math.floor(capital * 0.3)} VNĐ`;
+      else if (confidence >= 85) suggest = `${Math.floor(capital * 0.2)} VNĐ`;
+      else if (confidence >= 82) suggest = `${Math.floor(capital * 0.15)} VNĐ`;
+
+      if (prediction !== "⚠️ KHÔNG ĐÁNH") speak(prediction);
+      document.getElementById("result").innerHTML = `🔮 Dự đoán MD5: <span class="highlight">${prediction}</span> (${confidence}%)`;
+      document.getElementById("recommend").innerHTML = `💰 Gợi ý cược: <strong>${suggest}</strong>`;
+
+      history.shift(); // tự tiến 1 phiên
+      showHistory();
+    }
+  </script>
+</body>
+</html>
